@@ -9,4 +9,5 @@ import './shared/vendor';
 // NOTE: this isn't ES*-compliant/possible, but works because we use Webpack as a build tool
 import './styles/styles.scss';
 
+console.log("nvm is so cool!")
 render(<App />, document.getElementById('app'));

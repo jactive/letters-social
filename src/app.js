@@ -23,16 +23,15 @@ class App extends Component {
         super(props);
         this.state = {
             error: null,
-            loading: false,
+            loading: true,
             posts: [],
-            endpoint: `${process.env
-                .ENDPOINT}/posts?_page=1&_sort=date&_order=DESC&_embed=comments&_expand=user&_embed=likes`,
+            endpoint: `${process.env.ENDPOINT}/posts?_page=1&_sort=date&_order=DESC&_embed=comments&_expand=user&_embed=likes`,
         };
         this.getPosts = this.getPosts.bind(this);
     }
     static propTypes = {
         children: PropTypes.node,
-    };
+    }
     componentDidMount() {
         this.getPosts();
     }
@@ -44,14 +43,32 @@ class App extends Component {
         }));
     }
     getPosts() {
+        var resolveLater = (resolve, reject) => {
+            setTimeout(function() {
+              resolve(10);
+            }, 1000);
+        };
         API.fetchPosts(this.state.endpoint)
             .then(res => {
-                return res.json().then(posts => {
-                    const links = parseLinkHeader(res.headers.get('Link'));
-                    this.setState(() => ({
-                        posts: orderBy(this.state.posts.concat(posts), 'date', 'desc'),
-                        endpoint: links.next.url,
-                    }));
+                return new Promise((resolve, reject) => {
+                    console.log("wait start");
+                    const that = this;
+                    setTimeout(
+                        function() {
+                            resolve(
+                                res.json().then(posts => {
+                                    console.log("5 seconds later");
+                                    const links = parseLinkHeader(res.headers.get('Link'));
+                                    that.setState(() => ({
+                                        posts: orderBy(that.state.posts.concat(posts), 'date', 'desc'),
+                                        endpoint: links.next.url,
+                                        loading: false
+                                    }));
+                                })
+                            )
+                        },
+                        2000
+                    );
                 });
             })
             .catch(err => {
