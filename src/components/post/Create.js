@@ -17,8 +17,8 @@ class CreatePost extends React.Component {
             valid: false,
             showLocationPicker: false,
             location: {
-                lat: 34.1535641,
-                lng: -118.1428115,
+                lat: 34.1535641,   // latitude
+                lng: -118.1428115, // longitude
                 name: null
             },
             locationSelected: false
@@ -120,9 +120,15 @@ class CreatePost extends React.Component {
                     className="location-picker"
                     style={{ display: this.state.showLocationPicker ? "block" : "none" }}
                 >
+                    {/**
+                      * Passing the following functions to sub components as properties
+                      *    onLocationSelect={this.onLocationSelect}
+                      *    onLocationUpdate={this.onLocationUpdate}
+                      * coordinates the cacasde update between LocationTypeAhead and DisplayMap
+                      */}
                     {!this.state.locationSelected && [
                         <LocationTypeAhead
-                            key="LocationTypeAhead"
+                            key="LocationTypeAhead" // key attribute is specified.
                             onLocationSelect={this.onLocationSelect}
                             onLocationUpdate={this.onLocationUpdate}
                         />,
