@@ -26,6 +26,8 @@ export default class Router extends Component {
         // We'll store the routes on the Router component
         this.routes = {};
 
+console.log(props);
+console.dir(props.children);
         // Add all the children components to the routes
         this.addRoutes(props.children);
 

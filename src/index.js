@@ -19,7 +19,9 @@ import './shared/vendor';
 // NOTE: this isn't ES*-compliant/possible, but works because we use Webpack as a build tool
 import './styles/styles.scss';
 
-export const renderApp = (state, callback = () => {}) => {
+
+export const renderApp = (state, callback = () => {} /* default value */) => {
+    // https://reactjs.org/docs/jsx-in-depth.html#spread-attributes
     render(
         <Router {...state}>
             <Route path="" component={App}>
